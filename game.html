@@ -1,93 +1,75 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>فرار از نقطه‌مرگ</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Cursor</title>
   <style>
-    body { margin: 0; overflow: hidden; background: #111; color: #fff; font-family: sans-serif; text-align: center; }
-    #gameCanvas { background: #222; display: block; margin: 0 auto; }
-    #scoreBoard { margin-top: 10px; }
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+    body, html, #app {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #app {
+      overflow: hidden;
+      touch-action: pan-up;
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      text-shadow: 0 0 5px #ffffff, 0 0 20px #000, 0 0 30px #000;
+    }
+
+    #app h1 {
+      --fontSize: 60px;
+      --lineHeight: 80px;
+      width: auto;
+      height: calc(2 * var(--lineHeight));
+      line-height: var(--lineHeight);
+      margin: calc(50vh - var(--lineHeight)) auto 0;
+      font-size: var(--fontSize);
+      text-transform: uppercase;
+    }
+
+    #app a {
+      margin-top: 10px;
+      display: inline-block;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    #app canvas {
+      display: block;
+      position: fixed;
+      z-index: -1;
+      top: 0;
+    }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="400" height="600"></canvas>
-  <div id="scoreBoard">
-    <p>امتیاز: <span id="score">0</span></p>
-    <p>رکورد: <span id="highScore">0</span></p>
+  <div id="app">
+    <div id="hero">
+    </div>
   </div>
 
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    let player = { x: 200, y: 550, size: 20 };
-    let obstacles = [];
-    let score = 0;
-    let highScore = localStorage.getItem("highScore") || 0;
-    document.getElementById("highScore").textContent = highScore;
+  <script type="module">
+    import { neonCursor } from 'https://unpkg.com/threejs-toys@0.0.8/build/threejs-toys.module.cdn.min.js'
 
-    function drawPlayer() {
-      ctx.fillStyle = "lime";
-      ctx.fillRect(player.x - player.size/2, player.y - player.size/2, player.size, player.size);
-    }
-
-    function drawObstacles() {
-      ctx.fillStyle = "red";
-      obstacles.forEach(obs => {
-        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
-      });
-    }
-
-    function updateObstacles() {
-      obstacles.forEach(obs => obs.y += obs.speed);
-      obstacles = obstacles.filter(obs => obs.y < canvas.height);
-    }
-
-    function checkCollision() {
-      for (let obs of obstacles) {
-        if (
-          player.x < obs.x + obs.w &&
-          player.x + player.size > obs.x &&
-          player.y < obs.y + obs.h &&
-          player.y + player.size > obs.y
-        ) {
-          return true;
-        }
-      }
-      return false;
-    }
-
-    function spawnObstacle() {
-      let w = Math.random() * 100 + 20;
-      let x = Math.random() * (canvas.width - w);
-      obstacles.push({ x, y: -20, w, h: 20, speed: 2 + score / 50 });
-    }
-
-    function gameLoop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawPlayer();
-      drawObstacles();
-      updateObstacles();
-
-      if (checkCollision()) {
-        alert("باختی! امتیاز: " + score);
-        if (score > highScore) {
-          localStorage.setItem("highScore", score);
-        }
-        location.reload();
-      }
-
-      score++;
-      document.getElementById("score").textContent = score;
-      if (score % 50 === 0) spawnObstacle();
-
-      requestAnimationFrame(gameLoop);
-    }
-
-    document.addEventListener("mousemove", e => {
-      player.x = e.clientX - canvas.getBoundingClientRect().left;
-    });
-
-    gameLoop();
+    neonCursor({
+      el: document.getElementById('app'),
+      shaderPoints: 16,
+      curvePoints: 80,
+      curveLerp: 0.5,
+      radius1: 5,
+      radius2: 30,
+      velocityTreshold: 10,
+      sleepRadiusX: 100,
+      sleepRadiusY: 100,
+      sleepTimeCoefX: 0.0025,
+      sleepTimeCoefY: 0.0025
+    })
   </script>
 </body>
 </html>
