@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>فرار از نقطه‌مرگ</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #111; color: #fff; font-family: sans-serif; text-align: center; }
+    #gameCanvas { background: #222; display: block; margin: 0 auto; }
+    #scoreBoard { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <div id="scoreBoard">
+    <p>امتیاز: <span id="score">0</span></p>
+    <p>رکورد: <span id="highScore">0</span></p>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let player = { x: 200, y: 550, size: 20 };
+    let obstacles = [];
+    let score = 0;
+    let highScore = localStorage.getItem("highScore") || 0;
+    document.getElementById("highScore").textContent = highScore;
+
+    function drawPlayer() {
+      ctx.fillStyle = "lime";
+      ctx.fillRect(player.x - player.size/2, player.y - player.size/2, player.size, player.size);
+    }
+
+    function drawObstacles() {
+      ctx.fillStyle = "red";
+      obstacles.forEach(obs => {
+        ctx.fillRect(obs.x, obs.y, obs.w, obs.h);
+      });
+    }
+
+    function updateObstacles() {
+      obstacles.forEach(obs => obs.y += obs.speed);
+      obstacles = obstacles.filter(obs => obs.y < canvas.height);
+    }
+
+    function checkCollision() {
+      for (let obs of obstacles) {
+        if (
+          player.x < obs.x + obs.w &&
+          player.x + player.size > obs.x &&
+          player.y < obs.y + obs.h &&
+          player.y + player.size > obs.y
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function spawnObstacle() {
+      let w = Math.random() * 100 + 20;
+      let x = Math.random() * (canvas.width - w);
+      obstacles.push({ x, y: -20, w, h: 20, speed: 2 + score / 50 });
+    }
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawObstacles();
+      updateObstacles();
+
+      if (checkCollision()) {
+        alert("باختی! امتیاز: " + score);
+        if (score > highScore) {
+          localStorage.setItem("highScore", score);
+        }
+        location.reload();
+      }
+
+      score++;
+      document.getElementById("score").textContent = score;
+      if (score % 50 === 0) spawnObstacle();
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener("mousemove", e => {
+      player.x = e.clientX - canvas.getBoundingClientRect().left;
+    });
+
+    gameLoop();
+  </script>
+</body>
+</html>
