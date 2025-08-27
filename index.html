@@ -2,45 +2,186 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>سایت فریدون</title>
+  <title>zelaton</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn&display=swap" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Vazirmatn', sans-serif;
+    }
+
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: #fff;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      padding: 20px;
+      user-select: none;
+      
+    }
+   
+
+  @keyframes fadeOut {
+    to {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  }
+    
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    .circle.blue {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #00f, #00a);
+      top: 5%;
+      left: 5%;
+    }
+
+    .circle.orange {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, #f90, #c60);
+      bottom: 5%;
+      right: 5%;
+    }
+
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+      width: 100%;
+      max-width: 360px;
+      z-index: 1;
+      position: relative;
       text-align: center;
-      padding: 50px;
+      color: white;
     }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
+
+    .login-container h2 {
+      margin-bottom: 25px;
+      font-size: 22px;
     }
-    p {
-      font-size: 1.2em;
-      margin-top: 0;
+
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 6px;
+      background-color: #222;
+      color: white;
+      font-size: 14px;
     }
-    .button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 15px 30px;
-      background-color: #fff;
-      color: #00aaff;
-      border-radius: 30px;
-      text-decoration: none;
+
+    .login-container input::placeholder {
+      color: #aaa;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 16px;
+      background-color: white;
+      color: black;
+      border: none;
+      border-radius: 6px;
       font-weight: bold;
-      transition: all 0.3s ease;
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
-    .button:hover {
-      background-color: #00aaff;
-      color: #fff;
+
+    .login-container button:hover {
+      background-color: #ddd;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .social-buttons button {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .google {
+      background-color: #ccc;
+      color: black;
+    }
+
+    .facebook {
+      background-color: #1877f2;
+      color: white;
+    }
+    .neon-text {
+  color: #0ff;
+  font-weight: bold;
+  font-size: 24px;
+  text-shadow:
+    0 0 5px #0ff,
+    0 0 10px #0ff,
+    0 0 20px #0ff;
+  animation: neonFlicker 2.5s infinite;
+}
+
+@keyframes neonFlicker {
+  0%   { opacity: 1; text-shadow: 0 0 5px #0ff, 0 0 10px #0ff; }
+  7%   { opacity: 0.6; text-shadow: 0 0 2px #0ff; }
+  13%  { opacity: 1; text-shadow: 0 0 15px #0ff, 0 0 30px #0ff; }
+  21%  { opacity: 0.4; text-shadow: none; }
+  30%  { opacity: 1; text-shadow: 0 0 10px #0ff, 0 0 20px #0ff; }
+  45%  { opacity: 0.7; text-shadow: 0 0 3px #0ff; }
+  60%  { opacity: 1; text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+  75%  { opacity: 0.5; text-shadow: none; }
+  90%  { opacity: 1; text-shadow: 0 0 10px #0ff, 0 0 25px #0ff; }
+  100% { opacity: 0.8; text-shadow: 0 0 5px #0ff; }
+}
+
+    @media (min-width: 480px) {
+      .social-buttons {
+        flex-direction: row;
+      }
+
+      .social-buttons button {
+        flex: 1;
+      }
     }
   </style>
 </head>
-<body>
-  <h1>به سایت فریدون خوش آمدید 👋</h1>
-  <p>اینجا جاییه برای نمایش خلاقیت، پروژه‌ها و هرچیزی که دوست دارم با دنیا به اشتراک بذارم.</p>
-  <a href="game.html">بازی رکوردی رو شروع کن!</a>
+<body oncontextmenu="return false">
+  <div class="circle blue"></div>
+  <div class="circle orange"></div>
+
+  <div class="login-container">
+    <h2 class="neon-text">Z E L A T O N <br> G A M E</h2>
+    <input type="text" placeholder="Email or Phone">
+    <input type="password" placeholder="Password">
+    <button onclick="window.location.replace('game.html')">Log In</button>
+    <div class="social-buttons">
+      <button class="google">Google</button>
+      <button class="facebook">Facebook</button>
+    </div>
+  </div>
+  
 </body>
 </html>
