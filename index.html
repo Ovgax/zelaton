@@ -166,6 +166,31 @@
         flex: 1;
       }
     }
+    .neon-error {
+  color: rgb(254, 127, 127);
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 10px;
+  text-shadow:
+    0 0 5px #f00,
+    0 0 10px #f00,
+    0 0 20px #f00;
+  animation: neonBlink 1.5s infinite;
+}
+
+@keyframes neonBlink {
+  0%   { opacity: 1; text-shadow: 0 0 10px #f00, 0 0 20px #f00; }
+  8%   { opacity: 0.3; text-shadow: none; }
+  17%  { opacity: 0.8; text-shadow: 0 0 5px #f00; }
+  26%  { opacity: 0.4; text-shadow: 0 0 2px #f00; }
+  39%  { opacity: 1; text-shadow: 0 0 15px #f00, 0 0 30px #f00; }
+  52%  { opacity: 0.2; text-shadow: none; }
+  66%  { opacity: 0.9; text-shadow: 0 0 8px #f00; }
+  78%  { opacity: 0.5; text-shadow: 0 0 3px #f00; }
+  91%  { opacity: 1; text-shadow: 0 0 20px #f00, 0 0 40px #f00; }
+  100% { opacity: 0.6; text-shadow: 0 0 5px #f00; }
+}
+
   </style>
 </head>
 <body oncontextmenu="return false">
@@ -176,12 +201,31 @@
     <h2 class="neon-text">Z E L A T O N <br> G A M E</h2>
     <input type="text" placeholder="Email or Phone">
     <input type="password" placeholder="Password">
-    <button onclick="window.location.replace('game.html')">Log In</button>
-    <div class="social-buttons">
+      <button id="loginBtn">Log In</button> 
+      <p id="errorMsg" class="neon-error" style="display:none;">The username or password is incorrect.</p>
+      <div class="social-buttons">
       <button class="google">Google</button>
-      <button class="facebook">Facebook</button>
+      <button class="facebook" id="guestBtn">guest</button>
     </div>
   </div>
-  
+<script>
+  document.getElementById("loginBtn").addEventListener("click", function () {
+    const username = document.querySelectorAll("input")[0].value.trim();
+    const password = document.querySelectorAll("input")[1].value.trim();
+    const errorMsg = document.getElementById("errorMsg");
+
+    if (username === "1274" && password === "1274") {
+      errorMsg.style.display = "none";
+      window.location.href = "index3.html";
+    } else {
+      errorMsg.style.display = "block";
+    }
+  });
+</script>
+<script>
+  document.getElementById("guestBtn").addEventListener("click", function () {
+    window.location.href = "index2.html";
+  });
+</script>
 </body>
 </html>
